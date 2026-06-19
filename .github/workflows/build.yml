@@ -15,9 +15,11 @@ jobs:
           - name: Android
             os: ubuntu-latest
             target: Android
+            cli_platform: android
           - name: Windows
             os: windows-latest
             target: Windows
+            cli_platform: win
 
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
@@ -30,3 +32,4 @@ jobs:
         with:
           bindings: geode-sdk/bindings
           target: ${{ matrix.config.target }}
+          configure-args: --platform ${{ matrix.config.cli_platform }}
