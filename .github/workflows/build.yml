@@ -14,12 +14,10 @@ jobs:
         config:
           - name: Android
             os: ubuntu-latest
-            target: Android
-            cli_platform: android
+            target: android
           - name: Windows
             os: windows-latest
-            target: Windows
-            cli_platform: win
+            target: win
 
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
@@ -27,10 +25,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build Mod
-        uses: geode-sdk/build-geode-mod@main
+      - name: Setup Geode CLI
+        uses: geode-sdk/setup-geode@v3
         with:
-          bindings: geode-sdk/bindings
-          target: ${{ matrix.config.target }}
-        env:
-          GEODE_CLI_PLATFORM: ${{ matrix.config.cli_platform }}
+          version: v3.0.0-beta.1
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -S . \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DGEODE_TARGET_PLATFORM=${{ matrix.config.target }}
+
+      - name: Build Mod
+        run: cmake --build build --config Release
