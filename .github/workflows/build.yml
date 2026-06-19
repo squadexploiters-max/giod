@@ -32,4 +32,5 @@ jobs:
         with:
           bindings: geode-sdk/bindings
           target: ${{ matrix.config.target }}
-          configure-args: --platform ${{ matrix.config.cli_platform }}
+        env:
+          GEODE_CLI_PLATFORM: ${{ matrix.config.cli_platform }}
